@@ -22,7 +22,9 @@ productRouter.get("/", async (req, res) => {
       // .sort({_id:-1})
       .skip(skip)
       .limit(limit);
-    return res.status(200).send({products});
+    const productsTotal = await Product.countDocuments();
+    const hasMore = skip + limit < productsTotal ? true : false;
+    return res.status(200).send({products, hasMore});
   } catch (error) {
     console.log(error);
   }

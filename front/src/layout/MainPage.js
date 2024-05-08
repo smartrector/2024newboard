@@ -5,26 +5,43 @@ import CardItem from "../Components/CardItem";
 function MainPage() {
   const [products, setProducts] = useState([]);
 
-  const limit = 6;
+  const limit = 4;
   const [skip, setSkip] = useState([]);
   const [hasMore, setHasMore] = useState(false);
 
-  useEffect(() => {
-    const fetchProducts = async ({skip, limit, loadMore = false}) => {
-      const params = {
-        skip,
-        limit,
-      };
-      try {
-        const res = await axiosInstance.get("/products", {params});
-        console.log(res.data);
-        setProducts([...products, ...res.data.products]);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchProducts = async ({skip, limit, loadMore = false}) => {
+    const params = {
+      skip,
+      limit,
     };
+    try {
+      const res = await axiosInstance.get("/products", {params});
+      console.log(res.data);
+
+      if (loadMore) {
+        setProducts([...products, ...res.data.products]);
+      } else {
+        setProducts(res.data.products);
+      }
+      setHasMore(res.data.hasMore);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts({skip, limit});
   }, []);
+
+  function handelLoadMore() {
+    const body = {
+      skip: skip + limit,
+      limit,
+      loadMore: true,
+    };
+    fetchProducts(body);
+    setSkip(Number(skip) + Number(limit));
+  }
 
   return (
     <section>
@@ -48,11 +65,17 @@ function MainPage() {
       </div>
 
       {/* more  */}
-      <div className="flex justify-center ">
-        <button className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-400">
-          더보기
-        </button>
-      </div>
+
+      {hasMore && (
+        <div className="flex justify-center ">
+          <button
+            onClick={handelLoadMore}
+            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-400"
+          >
+            더보기
+          </button>
+        </div>
+      )}
     </section>
   );
 }

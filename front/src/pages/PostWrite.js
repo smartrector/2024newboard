@@ -33,7 +33,6 @@ function PostWrite() {
 
   async function handelSubmit(e) {
     e.preventDefault();
-    alert("입력");
     const body = {
       ...product,
     };
