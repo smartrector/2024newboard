@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import axiosInstance from "../utils/axios";
+import {useNavigate} from "react-router-dom";
 const continents = [
   {key: 1, value: "seoul"},
   {key: 2, value: "pusan"},
@@ -10,11 +12,13 @@ const continents = [
 function PostWrite() {
   const [product, setProduct] = useState({
     title: "",
-    discription: "",
+    description: "",
     price: 0,
     continents: 1,
     images: [],
   });
+
+  const navigate = useNavigate();
 
   function handelChange(e) {
     const {name, value} = e.target;
@@ -27,14 +31,23 @@ function PostWrite() {
     });
   }
 
-  function handelSubmit(e) {
+  async function handelSubmit(e) {
     e.preventDefault();
     alert("입력");
+    const body = {
+      ...product,
+    };
+    try {
+      await axiosInstance.post("/products", body);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <section>
-      <h2>자료입력</h2>
+      <h2 className="my-5">자료입력</h2>
 
       <form onSubmit={handelSubmit}>
         <div className="mb-4">
@@ -51,16 +64,16 @@ function PostWrite() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="discription" className="block mb-3">
+          <label htmlFor="description" className="block mb-3">
             설명
           </label>
           <input
             type="text"
-            id="discription"
-            name="discription"
+            id="description"
+            name="description"
             className="w-full px-4 py-2 border rounded-md"
             onChange={handelChange}
-            value={product.discription}
+            value={product.description}
           />
         </div>
         <div className="mb-4">
