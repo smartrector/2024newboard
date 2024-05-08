@@ -11,8 +11,17 @@ productRouter.post("/", async (req, res) => {
   }
 });
 productRouter.get("/", async (req, res) => {
+  const limit = req.query.limit ? Number(req.query.limit) : 20;
+  const skip = req.query.skip ? Number(req.query.skip) : 0;
+  const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  const order = req.query.order ? req.query.order : "desc";
+
   try {
-    const products = await Product.find({}).sort({_id: -1});
+    const products = await Product.find({})
+      .sort([[sortBy, order]])
+      // .sort({_id:-1})
+      .skip(skip)
+      .limit(limit);
     return res.status(200).send({products});
   } catch (error) {
     console.log(error);
