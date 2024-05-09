@@ -1,22 +1,34 @@
 import React, {useEffect, useState} from "react";
 import axiosInstance from "../utils/axios";
 import CardItem from "../Components/CardItem";
+import {continents, prices} from "../utils/filterData";
+import CheckBox from "../Components/CheckBox";
 
 function MainPage() {
   const [products, setProducts] = useState([]);
 
   const limit = 4;
-  const [skip, setSkip] = useState([]);
+  const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const [filters, setFilters] = useState({
+    continents: [1, 2],
+    price: [],
+  });
 
-  const fetchProducts = async ({skip, limit, loadMore = false}) => {
+  const fetchProducts = async ({
+    skip,
+    limit,
+    loadMore = false,
+    filters = {},
+  }) => {
     const params = {
       skip,
       limit,
+      filters,
     };
     try {
       const res = await axiosInstance.get("/products", {params});
-      console.log(res.data);
+      console.log(res.data.products);
 
       if (loadMore) {
         setProducts([...products, ...res.data.products]);
@@ -38,9 +50,14 @@ function MainPage() {
       skip: skip + limit,
       limit,
       loadMore: true,
+      filters,
     };
     fetchProducts(body);
     setSkip(Number(skip) + Number(limit));
+  }
+
+  function handlefilters(newFilteredData) {
+    console.log(newFilteredData);
   }
 
   return (
@@ -49,8 +66,38 @@ function MainPage() {
 
       {/* filter  */}
       <div className="flex gap-3">
-        <div className="w-1/2">checkbox</div>
-        <div className="w-1/2">radio</div>
+        <div className="w-full px-2">
+          <h3>지역선택</h3>
+          {/* <div className="flex gap-4 flex-wrap">
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+            <div className="w-[20%] bg-slate-200">text</div>
+          </div> */}
+
+          {/* <div className="grid grid-cols-3 gap-4 sm:grid-cols-5">
+            <div className="w-[100%] bg-slate-200">text</div>
+            <div className="w-[100%] bg-slate-200">text</div>
+            <div className="w-[100%] bg-slate-200">text</div>
+            <div className="w-[100%] bg-slate-200">text</div>
+            <div className="w-[100%] bg-slate-200">text</div>
+            <div className="w-[100%] bg-slate-200">text</div>
+          </div> */}
+          <div>
+            <CheckBox
+              continents={continents}
+              checkedContinents={filters.continents}
+              onFilters={(filters) => {
+                handlefilters(filters);
+              }}
+            />
+          </div>
+        </div>
+        {/* <div className="w-1/2">radio</div> */}
       </div>
 
       {/* search */}
