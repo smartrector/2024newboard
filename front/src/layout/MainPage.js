@@ -3,6 +3,7 @@ import axiosInstance from "../utils/axios";
 import CardItem from "../Components/CardItem";
 import {continents, prices} from "../utils/filterData";
 import CheckBox from "../Components/CheckBox";
+import SearchInp from "../Components/SearchInp";
 
 function MainPage() {
   const [products, setProducts] = useState([]);
@@ -14,6 +15,8 @@ function MainPage() {
     continents: [],
     price: [],
   });
+
+  const [searchForm, setSearchForm] = useState("");
 
   const fetchProducts = async ({
     skip,
@@ -76,12 +79,17 @@ function MainPage() {
     setSkip(0);
   }
 
+  function handleSearch(e) {
+    console.log(e.target.value);
+    setSearchForm(e.target.value);
+  }
+
   return (
     <section>
       <h2>글리스트</h2>
       {filters.continents}
       {/* filter  */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 mb-4">
         <div className="w-full px-2">
           <h3>지역선택</h3>
           {/* <div className="flex gap-4 flex-wrap">
@@ -117,7 +125,9 @@ function MainPage() {
       </div>
 
       {/* search */}
-      <div className="flex justify-end mb-3">search</div>
+      <div className="flex justify-end mb-3">
+        <SearchInp searchForm={searchForm} onSearch={handleSearch} />
+      </div>
 
       {/* products  */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-3">
