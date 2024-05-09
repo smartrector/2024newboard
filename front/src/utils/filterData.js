@@ -5,7 +5,7 @@ const continents = [
   },
   {
     _id: 2,
-    name: "pusan",
+    name: "busan",
   },
   {
     _id: 3,

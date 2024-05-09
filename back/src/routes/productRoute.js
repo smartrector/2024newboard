@@ -16,13 +16,23 @@ productRouter.get("/", async (req, res) => {
   const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   const order = req.query.order ? req.query.order : "desc";
 
+  let findArgs = {};
+
+  for (let key in req.query.filters) {
+    if (req.query.filters[key].length > 0) {
+      findArgs[key] = req.query.filters[key];
+    }
+  }
+
+  console.log(findArgs);
+
   try {
-    const products = await Product.find({})
+    const products = await Product.find(findArgs)
       .sort([[sortBy, order]])
       // .sort({_id:-1})
       .skip(skip)
       .limit(limit);
-    const productsTotal = await Product.countDocuments();
+    const productsTotal = await Product.countDocuments(findArgs);
     const hasMore = skip + limit < productsTotal ? true : false;
     return res.status(200).send({products, hasMore});
   } catch (error) {

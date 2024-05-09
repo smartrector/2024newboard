@@ -11,7 +11,7 @@ function MainPage() {
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [filters, setFilters] = useState({
-    continents: [1, 2],
+    continents: [],
     price: [],
   });
 
@@ -58,12 +58,28 @@ function MainPage() {
 
   function handlefilters(newFilteredData) {
     console.log(newFilteredData);
+    const newFliters = {...filters};
+    newFliters["continents"] = newFilteredData;
+
+    showFilterResult(newFliters);
+    setFilters(newFliters);
+  }
+
+  function showFilterResult(filters) {
+    console.log(filters);
+    const body = {
+      skip: 0,
+      limit,
+      filters,
+    };
+    fetchProducts(body);
+    setSkip(0);
   }
 
   return (
     <section>
       <h2>글리스트</h2>
-
+      {filters.continents}
       {/* filter  */}
       <div className="flex gap-3">
         <div className="w-full px-2">
