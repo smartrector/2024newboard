@@ -4,6 +4,7 @@ import CardItem from "../Components/CardItem";
 import {continents, prices} from "../utils/filterData";
 import CheckBox from "../Components/CheckBox";
 import SearchInp from "../Components/SearchInp";
+import RadioBox from "../Components/RadioBox";
 
 function MainPage() {
   const [products, setProducts] = useState([]);
@@ -23,11 +24,13 @@ function MainPage() {
     limit,
     loadMore = false,
     filters = {},
+    searchForm = "",
   }) => {
     const params = {
       skip,
       limit,
       filters,
+      searchForm,
     };
     try {
       const res = await axiosInstance.get("/products", {params});
@@ -54,18 +57,33 @@ function MainPage() {
       limit,
       loadMore: true,
       filters,
+      searchForm,
     };
     fetchProducts(body);
     setSkip(Number(skip) + Number(limit));
   }
 
-  function handlefilters(newFilteredData) {
+  function handlefilters(newFilteredData, cate) {
     console.log(newFilteredData);
     const newFliters = {...filters};
-    newFliters["continents"] = newFilteredData;
+    newFliters[cate] = newFilteredData;
+    if (cate === "price") {
+      const priceValues = handlePrice(newFilteredData);
+      newFliters[cate] = priceValues;
+    }
 
     showFilterResult(newFliters);
     setFilters(newFliters);
+  }
+
+  function handlePrice(value) {
+    let array = [];
+    for (let key in prices) {
+      if (prices[key]._id === parseInt(value, 10)) {
+        array = prices[key].array;
+      }
+    }
+    return array;
   }
 
   function showFilterResult(filters) {
@@ -74,6 +92,7 @@ function MainPage() {
       skip: 0,
       limit,
       filters,
+      searchForm,
     };
     fetchProducts(body);
     setSkip(0);
@@ -81,6 +100,15 @@ function MainPage() {
 
   function handleSearch(e) {
     console.log(e.target.value);
+
+    const body = {
+      skip: 0,
+      limit,
+      filters,
+      searchForm: e.target.value,
+    };
+    fetchProducts(body);
+    setSkip(0);
     setSearchForm(e.target.value);
   }
 
@@ -116,7 +144,16 @@ function MainPage() {
               continents={continents}
               checkedContinents={filters.continents}
               onFilters={(filters) => {
-                handlefilters(filters);
+                handlefilters(filters, "continents");
+              }}
+            />
+          </div>
+          <div>
+            <RadioBox
+              prices={prices}
+              checkedPrice={filters.price}
+              onFilers={(filters) => {
+                handlefilters(filters, "price");
               }}
             />
           </div>
@@ -138,7 +175,6 @@ function MainPage() {
       </div>
 
       {/* more  */}
-
       {hasMore && (
         <div className="flex justify-center ">
           <button

@@ -15,6 +15,7 @@ productRouter.get("/", async (req, res) => {
   const skip = req.query.skip ? Number(req.query.skip) : 0;
   const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   const order = req.query.order ? req.query.order : "desc";
+  const search = req.query.searchForm;
 
   let findArgs = {};
 
@@ -24,7 +25,9 @@ productRouter.get("/", async (req, res) => {
     }
   }
 
-  console.log(findArgs);
+  if (search) {
+    findArgs["$text"] = {$search: search};
+  }
 
   try {
     const products = await Product.find(findArgs)
