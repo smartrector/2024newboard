@@ -70,6 +70,7 @@ function MainPage() {
     if (cate === "price") {
       const priceValues = handlePrice(newFilteredData);
       newFliters[cate] = priceValues;
+      console.log(priceValues);
     }
 
     showFilterResult(newFliters);
@@ -115,7 +116,7 @@ function MainPage() {
   return (
     <section>
       <h2>글리스트</h2>
-      {filters.continents}
+      {filters.price}
       {/* filter  */}
       <div className="flex gap-3 mb-4">
         <div className="w-full px-2">
@@ -152,7 +153,7 @@ function MainPage() {
             <RadioBox
               prices={prices}
               checkedPrice={filters.price}
-              onFilers={(filters) => {
+              onFilters={(filters) => {
                 handlefilters(filters, "price");
               }}
             />
