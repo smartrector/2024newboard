@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const app = express();
 const cors = require("cors");
 const productRouter = require("./routes/productRoute");
+const restRouter = require("./routes/mapRoute");
 
 app.use(cors());
 
@@ -18,6 +19,7 @@ const server = async function () {
     app.use(express.json());
 
     app.use("/products", productRouter);
+    app.use("/map", restRouter);
 
     app.listen(4000);
   } catch (error) {
