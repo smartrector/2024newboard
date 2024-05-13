@@ -8,6 +8,8 @@ const restRouter = require("./routes/mapRoute");
 
 app.use(cors());
 
+app.use("/uploads", express.static("uploads"));
+
 dotenv.config();
 
 const server = async function () {
@@ -19,7 +21,7 @@ const server = async function () {
     app.use(express.json());
 
     app.use("/products", productRouter);
-    app.use("/map", restRouter);
+    // app.use("/map", restRouter);
 
     app.listen(4000);
   } catch (error) {

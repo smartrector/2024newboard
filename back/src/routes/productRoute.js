@@ -2,6 +2,20 @@ const express = require("express");
 const Product = require("../models/Product");
 const productRouter = express.Router();
 
+const Image = require("../models/Image");
+const upload = require("../middleware/imageUpload");
+
+productRouter.post("/image", upload.single("image"), async (req, res) => {
+  try {
+    const image = await new Image({
+      originaFileName: req.file.originalname,
+      key: req.file.filename,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 productRouter.post("/", async (req, res) => {
   try {
     const product = await new Product(req.body).save();
