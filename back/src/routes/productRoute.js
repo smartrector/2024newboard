@@ -7,10 +7,12 @@ const upload = require("../middleware/imageUpload");
 
 productRouter.post("/image", upload.single("image"), async (req, res) => {
   try {
-    const image = await new Image({
-      originaFileName: req.file.originalname,
-      key: req.file.filename,
-    });
+    console.log(req.file);
+    // const image = await new Image({
+    //   originalFileName: req.file.originalname,
+    //   key: req.file.filename,
+    // });
+    return res.send("fileup");
   } catch (error) {
     console.log(error);
   }

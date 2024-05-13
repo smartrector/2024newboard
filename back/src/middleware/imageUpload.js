@@ -8,13 +8,13 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     return cb(null, `${uuid()}.${mime.extension(file.mimetype)}`);
-  }, // test.jpg
+  },
 });
 
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
-    if (["image/png", "images/jpeg"].includes(file.mimetype)) {
+    if (["image/png", "image/jpeg"].includes(file.mimetype)) {
       return cb(null, true);
     } else {
       return cb(new Error("invlid file type"), false);
