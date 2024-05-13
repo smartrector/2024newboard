@@ -12,7 +12,7 @@ productRouter.post("/image", upload.single("image"), async (req, res) => {
     //   originalFileName: req.file.originalname,
     //   key: req.file.filename,
     // });
-    return res.send("fileup");
+    return res.send(req.file.filename);
   } catch (error) {
     console.log(error);
   }

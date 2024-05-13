@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import axiosInstance from "../utils/axios";
 import {useNavigate} from "react-router-dom";
+import FileUpload from "../Components/FileUpload";
 const continents = [
   {key: 1, value: "seoul"},
   {key: 2, value: "pusan"},
@@ -42,6 +43,13 @@ function PostWrite() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handelImage(newImages) {
+    setProduct((prevState) => ({
+      ...prevState,
+      images: newImages,
+    }));
   }
 
   return (
@@ -108,6 +116,9 @@ function PostWrite() {
             })}
           </select>
         </div>
+
+        <FileUpload images={product.images} onImageChange={handelImage} />
+
         <div>
           <button className="w-full px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700">
             글작성완료
