@@ -7,6 +7,7 @@ const RestrantSchema = mongoose.Schema({
   location: {
     type: {
       type: String,
+      enum: ["Point"], // 위치 타입은 'Point'로 제한
       default: "Point", // GeoJSON 타입은 기본적으로 'Point'로 설정
     },
     coordinates: {
@@ -16,5 +17,5 @@ const RestrantSchema = mongoose.Schema({
   },
 });
 
-const Restrants = mongoose.model("restaurant", RestrantSchema);
-module.exports = Restrants;
+const Restaurant = mongoose.model("restaurant", RestrantSchema);
+module.exports = Restaurant;

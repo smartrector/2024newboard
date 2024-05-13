@@ -21,7 +21,7 @@ const server = async function () {
     app.use(express.json());
 
     app.use("/products", productRouter);
-    // app.use("/map", restRouter);
+    app.use("/map", restRouter);
 
     app.listen(4000);
   } catch (error) {

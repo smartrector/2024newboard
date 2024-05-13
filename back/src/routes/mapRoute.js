@@ -1,5 +1,5 @@
 const express = require("express");
-const Restrants = require("../models/Restrants");
+const Restaurant = require("../models/Restrants");
 const restRouter = express.Router();
 
 restRouter.get("/", async (req, res) => {
@@ -17,19 +17,21 @@ restRouter.post("/location", async (req, res) => {
     console.log(lat, lon);
 
     // 현재 위치에서 2km 이내의 레스토랑 데이터 조회
-    const Restrants = await Restrants.find({
-      location: {
-        $nearSphere: {
-          $geometry: {
+    const restaurants = await Restaurant.aggregate([
+      {
+        $geoNear: {
+          near: {
             type: "Point",
-            coordinates: [parseFloat(lon), parseFloat(lat)], // 현재 위치의 경도, 위도
+            coordinates: [parseFloat(lon), parseFloat(lat)], // 경도, 위도 순서
           },
-          $maxDistance: 2000, // 최대 거리 (미터 단위, 여기서는 2km)
+          distanceField: "distance",
+          maxDistance: 800, // 최대 거리 (미터 단위, 여기서는 2km) 2000
+          spherical: true,
         },
       },
-    });
+    ]);
 
-    return res.status(200).send({Restrants});
+    return res.status(200).json({restaurants}); // 조회된 레스토랑 데이터를 JSON 응답으로 보냄
   } catch (error) {
     console.error("데이터 조회 중 오류:", error);
     return res.status(500).json({error: "데이터 조회 중 오류 발생"});
