@@ -25,7 +25,7 @@ restRouter.post("/location", async (req, res) => {
             coordinates: [parseFloat(lon), parseFloat(lat)], // 경도, 위도 순서
           },
           distanceField: "distance",
-          maxDistance: 800, // 최대 거리 (미터 단위, 여기서는 2km) 2000
+          maxDistance: 1000, // 최대 거리 (미터 단위, 여기서는 2km) 2000
           spherical: true,
         },
       },
