@@ -19,6 +19,6 @@ jobs:
           script: |
             whoami
             ls
-            cd /2024newboard
+            cd 2024newboard
             git pull origin main
             ls -a
