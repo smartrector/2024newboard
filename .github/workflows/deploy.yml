@@ -20,7 +20,6 @@ jobs:
             cd /home/ubuntu/2024newboard
             sudo git pull origin main
             cd front
-            ls -a
             #npm install
-            #npm run build
+            sudo npm run build
             #sudo systemctl reload nginx
