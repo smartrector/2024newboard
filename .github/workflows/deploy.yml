@@ -20,5 +20,5 @@ jobs:
             whoami
             ls
             cd 2024newboard
-            git pull origin main
+            sudo git pull origin main
             ls -a
