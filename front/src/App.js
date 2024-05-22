@@ -10,7 +10,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* outlet으로 화면이 나옴 */}
+          {/* outlet으로 화면이 나옴1 */}
           <Route index element={<MainPage />} />
           <Route path="/postwrite" element={<PostWrite />}></Route>
         </Route>
