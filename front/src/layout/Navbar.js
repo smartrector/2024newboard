@@ -11,10 +11,10 @@ function Navbar() {
         <div className="flex h-[100%]">
           <ul className="flex justify-center items-center px-5">
             <li className="flex justify-center items-center px-5">
-              <Link to="/">리스트</Link>
+              <Link to="/">리스트11</Link>
             </li>
             <li className="flex justify-center items-center px-5">
-              <Link to="/postwrite">글작성</Link>
+              <Link to="/postwrite">글작성11</Link>
             </li>
           </ul>
         </div>

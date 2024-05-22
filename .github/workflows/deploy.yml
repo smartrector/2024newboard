@@ -22,4 +22,4 @@ jobs:
             cd front
             #npm install
             sudo npm run build
-            #sudo systemctl reload nginx
+            sudo systemctl restart nginx
